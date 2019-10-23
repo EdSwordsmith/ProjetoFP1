@@ -20,3 +20,19 @@ def eh_labirinto(maze):
 
 def eh_posicao(pos):
     return type(pos) is tuple and len(pos) == 2 and pos[0] >= 0 and pos[1] >= 0
+
+
+def eh_conj_posicoes(conj):
+    if not type(conj) is tuple:
+        return False
+
+    for el in conj:
+        if not eh_posicao(el):
+            return False
+    return True
+
+
+def tamanho_labirinto(maze):
+    if not eh_labirinto(maze):
+        raise ValueError("tamanho_labirinto: argumento invalido")
+    return (len(maze), len(maze[0]))
