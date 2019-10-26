@@ -1,19 +1,21 @@
+# 95568, Eduardo Miguel Caetano Espadeiro
+
+
 def eh_labirinto(maze):
+    """Devolve True se maze for um labirinto e False se nao for"""
     if not type(maze) is tuple:
         return False
 
     nx, ny = len(maze), 0
 
     for i in range(nx):
-        if not type(maze) is tuple or (ny != len(maze[i]) and i != 0):
+        if not type(maze[i]) is tuple or (ny != len(maze[i]) and i != 0):
             return False
 
         for j in range(len(maze[i])):
-            if maze[i][j] != 0 and maze[i][j] != 1:
-                return False
-            elif (i == 0 or i == nx - 1) and maze[i][j] != 1:
-                return False
-            elif (j == 0 or j == ny) and maze[i][j] != 1:
+            if (maze[i][j] != 0 and maze[i][j] != 1) \
+                        ((i == 0 or i == nx - 1) and maze[i][j] != 1) \
+                        ((j == 0 or j == ny) and maze[i][j] != 1):
                 return False
 
         ny = len(maze[i])
@@ -22,10 +24,12 @@ def eh_labirinto(maze):
 
 
 def eh_posicao(pos):
+    """Devolve True se pos for uma posicao"""
     return type(pos) is tuple and len(pos) == 2 and pos[0] >= 0 and pos[1] >= 0
 
 
 def eh_conj_posicoes(conj):
+    """Devolve True se conj for um conjunto de posicoes"""
     if not type(conj) is tuple:
         return False
 
@@ -36,12 +40,14 @@ def eh_conj_posicoes(conj):
 
 
 def tamanho_labirinto(maze):
+    """Devolve um tuplo com as dimensoes do labirinto"""
     if not eh_labirinto(maze):
         raise ValueError("tamanho_labirinto: argumento invalido")
     return (len(maze), len(maze[0]))
 
 
 def eh_mapa_valido(maze, posicoes):
+    """Devolve true se maze e posicoes formarem um mapa valido"""
     if not eh_labirinto(maze) or not eh_conj_posicoes(posicoes):
         raise ValueError("eh_mapa_valido: algum dos argumentos e invalido")
 
@@ -66,18 +72,20 @@ def eh_posicao_livre(maze, posicoes, pos):
 
 
 def posicoes_adjacentes(pos):
+    """Devolve um tuplo contendo as posicoes adjancentes a pos"""
     if not eh_posicao(pos):
         raise ValueError("posicoes_adjacentes: argumento invalido")
-    x, y = pos
+
     posicoes = ()
-    if y != 0:
-        posicoes = posicoes + ((x, y - 1),)
-    if x != 0:
-        posicoes = posicoes + ((x - 1, y),)
-    return posicoes + ((x + 1, y), (x, y + 1))
+    if pos[1] != 0:
+        posicoes = posicoes + ((pos[0], pos[1] - 1),)
+    if pos[0] != 0:
+        posicoes = posicoes + ((pos[0] - 1, pos[1]),)
+    return posicoes + ((pos[0] + 1, pos[1]), (pos[0], pos[1] + 1))
 
 
 def mapa_str(maze, posicoes):
+    """Devolve uma cadeia de carateres com o mapa do labirinto"""
     if not eh_mapa_valido(maze, posicoes):
         raise ValueError("mapa_str: algum dos argumentos e invalido")
     res = ""
@@ -96,4 +104,3 @@ def mapa_str(maze, posicoes):
                     res = res + "."
         res = res + "\n"
         return res
-
