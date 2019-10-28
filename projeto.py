@@ -17,7 +17,7 @@ def eh_labirinto(tuplo):
             return False
 
         for j in range(len(tuplo[i])):
-            if type(tuplo[i][j]) is int \
+            if type(tuplo[i][j]) is not int \
                     or (tuplo[i][j] != 0 and tuplo[i][j] != 1) \
                     or ((i == 0 or i == nx - 1) and tuplo[i][j] != 1) \
                     or ((j == 0 or j == ny) and tuplo[i][j] != 1):
@@ -144,7 +144,7 @@ def obter_objetivos(labirinto, unidades, posicao):
         if unidade == posicao:
             continue
         for pos in posicoes_adjacentes(unidade):
-            if pos not in res and eh_posicao_livre(labirinto, unidades, p):
+            if pos not in res and eh_posicao_livre(labirinto, unidades, pos):
                 res = res + (pos,)
     return res
 
@@ -153,4 +153,21 @@ def obter_caminho(labirinto, unidades, posicao):
     if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
         raise ValueError("obter_caminho: algum dos argumentos e invalido")
 
-    
+    fila_exploracao = [(posicao,)]
+    posicoes_visitadas = []
+    objetivos = obter_objetivos(labirinto, unidades, posicao)
+
+    while fila_exploracao:
+        caminho_atual = fila_exploracao.pop(0)
+        posicao_atual = caminho_atual[-1]
+
+        if posicao_atual not in posicoes_visitadas:
+            posicoes_visitadas.append(posicao_atual)
+            if posicao_atual in objetivos:
+                return caminho_atual
+            for pos in posicoes_adjacentes(posicao_atual):
+                if eh_posicao_livre(labirinto, unidades, pos):
+                    novo_caminho = caminho_atual + (pos,)
+                    fila_exploracao.append(novo_caminho)
+    return ()
+
