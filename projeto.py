@@ -1,30 +1,35 @@
 # 95568, Eduardo Miguel Caetano Espadeiro
 
 
-def eh_labirinto(maze):
-    """Devolve True se maze for um labirinto e False se nao for"""
-    if not type(maze) is tuple:
+def eh_labirinto(tuplo):
+    """
+    Devolve True se tuplo for um labirinto.
+    """
+    if not type(tuplo) is tuple:
         return False
 
-    nx, ny = len(maze), 0
+    nx, ny = len(tuplo), 0
 
     for i in range(nx):
-        if not type(maze[i]) is tuple or (ny != len(maze[i]) and i != 0):
+        if not type(tuplo[i]) is tuple or (ny != len(tuplo[i]) and i != 0):
             return False
 
-        for j in range(len(maze[i])):
-            if (maze[i][j] != 0 and maze[i][j] != 1) \
-                        ((i == 0 or i == nx - 1) and maze[i][j] != 1) \
-                        ((j == 0 or j == ny) and maze[i][j] != 1):
+        for j in range(len(tuplo[i])):
+            if (tuplo[i][j] != 0 and tuplo[i][j] != 1) \
+                        or ((i == 0 or i == nx - 1) and tuplo[i][j] != 1) \
+                        or ((j == 0 or j == ny) and tuplo[i][j] != 1):
                 return False
 
-        ny = len(maze[i])
+        ny = len(tuplo[i])
 
     return nx >= 3 and ny >= 3
 
 
 def eh_posicao(pos):
-    """Devolve True se pos for uma posicao"""
+    """
+    Devolve True se pos for uma posicao.
+    Uma posicao e um tuplo que contem 2 inteiros nao negativos
+    """
     return type(pos) is tuple and len(pos) == 2 and pos[0] >= 0 and pos[1] >= 0
 
 
@@ -88,9 +93,11 @@ def mapa_str(maze, posicoes):
     """Devolve uma cadeia de carateres com o mapa do labirinto"""
     if not eh_mapa_valido(maze, posicoes):
         raise ValueError("mapa_str: algum dos argumentos e invalido")
+
     res = ""
-    for x in range(len(maze)):
-        for y in range(len(maze[x])):
+    print(maze)
+    for y in range(len(maze[0])):
+        for x in range(len(maze)):
             if maze[x][y] == 1:
                 res = res + "#"
             else:
@@ -103,4 +110,4 @@ def mapa_str(maze, posicoes):
                 if not unidade:
                     res = res + "."
         res = res + "\n"
-        return res
+    return res
