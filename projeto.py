@@ -64,6 +64,7 @@ def eh_mapa_valido(maze, posicoes):
 
 
 def eh_posicao_livre(maze, posicoes, pos):
+    """Verifica se a posicao pos nao se encontra ocupada por uma parede ou unidade."""
     if not eh_mapa_valido(maze, posicoes) or not eh_posicao(pos):
         raise ValueError("eh_posicao_livre: algum dos argumentos e invalido")
     nx, ny = tamanho_labirinto(maze)
@@ -95,19 +96,13 @@ def mapa_str(maze, posicoes):
         raise ValueError("mapa_str: algum dos argumentos e invalido")
 
     res = ""
-    print(maze)
     for y in range(len(maze[0])):
         for x in range(len(maze)):
             if maze[x][y] == 1:
                 res = res + "#"
+            elif not eh_posicao_livre(maze, posicoes, (x, y)):
+                res = res + "0"
             else:
-                unidade = False
-                for pos in posicoes:
-                    if pos[0] == x and pos[1] == y:
-                        res = res + "0"
-                        unidade = True
-                        break
-                if not unidade:
-                    res = res + "."
+                res = res + "."
         res = res + "\n"
     return res
