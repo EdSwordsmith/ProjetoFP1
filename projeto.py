@@ -15,9 +15,10 @@ def eh_labirinto(tuplo):
             return False
 
         for j in range(len(tuplo[i])):
-            if (tuplo[i][j] != 0 and tuplo[i][j] != 1) \
-                        or ((i == 0 or i == nx - 1) and tuplo[i][j] != 1) \
-                        or ((j == 0 or j == ny) and tuplo[i][j] != 1):
+            if type(tuplo[i][j]) is int \
+                    or (tuplo[i][j] != 0 and tuplo[i][j] != 1) \
+                    or ((i == 0 or i == nx - 1) and tuplo[i][j] != 1) \
+                    or ((j == 0 or j == ny) and tuplo[i][j] != 1):
                 return False
 
         ny = len(tuplo[i])
@@ -25,16 +26,19 @@ def eh_labirinto(tuplo):
     return nx >= 3 and ny >= 3
 
 
-def eh_posicao(pos):
+def eh_posicao(tuplo):
     """
     Devolve True se pos for uma posicao.
     Uma posicao e um tuplo que contem 2 inteiros nao negativos
     """
-    return type(pos) is tuple and len(pos) == 2 and pos[0] >= 0 and pos[1] >= 0
+    return type(tuplo) is tuple and len(tuplo) == 2 and tuplo[0] >= 0 and tuplo[1] >= 0 and type(tuplo[0]) is int and type(tuplo[1]) is int
 
 
 def eh_conj_posicoes(conj):
-    """Devolve True se conj for um conjunto de posicoes"""
+    """
+    Devolve True se conj for um conjunto de posicoes.
+    Um conjunto de posicoes e um tuplo que contem tuplos que verifiquem eh_posicao.
+    """
     if not type(conj) is tuple:
         return False
 
@@ -106,3 +110,25 @@ def mapa_str(maze, posicoes):
                 res = res + "."
         res = res + "\n"
     return res
+
+
+def obter_objetivos(maze, unidades, pos):
+    """
+    Devolve as posicoes adjancestes as unidades, que sejam
+    posicoes livres no labirinto, nao inclui as posicoes adjancentes
+    a unidade correspondente a pos.
+    """
+    if not eh_mapa_valido(maze, unidades) or pos not in unidades:
+        raise ValueError("obter_objetivos: algum dos argumentos e invalido")
+    res = ()
+    for unidade in unidades:
+        if unidade == pos:
+            continue
+        for p in posicoes_adjacentes(unidade):
+            if p not in res and eh_posicao_livre(maze, unidades, p):
+                res = res + (p,)
+    return res
+
+
+def obter_caminho():
+    pass
