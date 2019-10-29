@@ -166,6 +166,10 @@ def obter_caminho(labirinto, unidades, posicao):
     visitadas = []
     objetivos = obter_objetivos(labirinto, unidades, posicao)
 
+    for unidade in unidades:
+        if posicao in posicoes_adjacentes(unidade):
+            return (posicao,)
+
     while fila_exploracao:
         caminho_atual = fila_exploracao.pop(0)
         posicao_atual = caminho_atual[-1]
@@ -186,8 +190,9 @@ def mover_unidade(labirinto, unidades, posicao):
             or posicao not in unidades or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("mover_unidade: algum dos argumentos e invalido")
 
-    if len(unidades) > 1:
-        caminho = obter_caminho(labirinto, unidades, posicao)
+    caminho = obter_caminho(labirinto, unidades, posicao)
+
+    if len(unidades) > 1 and len(caminho) > 1:
         for i in range(len(unidades)):
             if unidades[i] == posicao:
                 return unidades[:i] + (caminho[1],) + unidades[i+1:]
