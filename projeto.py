@@ -188,5 +188,5 @@ def mover_unidade(labirinto, unidades, posicao):
     caminho = obter_caminho(labirinto, unidades, posicao)
     for i in range(len(unidades)):
         if unidades[i] == posicao:
-            unidades = unidades[:i] + (caminho[1],) + unidades[i+1:]
+            return unidades[:i] + (caminho[1],) + unidades[i+1:]
     return unidades
