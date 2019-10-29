@@ -185,8 +185,11 @@ def mover_unidade(labirinto, unidades, posicao):
     if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) or not eh_posicao(posicao) \
             or posicao not in unidades or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("mover_unidade: algum dos argumentos e invalido")
-    caminho = obter_caminho(labirinto, unidades, posicao)
-    for i in range(len(unidades)):
-        if unidades[i] == posicao:
-            return unidades[:i] + (caminho[1],) + unidades[i+1:]
+
+    if len(unidades) > 1:
+        caminho = obter_caminho(labirinto, unidades, posicao)
+        for i in range(len(unidades)):
+            if unidades[i] == posicao:
+                return unidades[:i] + (caminho[1],) + unidades[i+1:]
+
     return unidades
