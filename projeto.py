@@ -84,8 +84,10 @@ def eh_posicao_livre(labirinto, unidades, posicao):
     """
     Verifica se a posicao pos nao se encontra ocupada por uma parede ou unidade.
     """
-    if not eh_mapa_valido(labirinto, unidades) or not eh_posicao(posicao):
+    if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) or not eh_posicao(posicao)\
+            or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("eh_posicao_livre: algum dos argumentos e invalido")
+
     nx, ny = tamanho_labirinto(labirinto)
     if posicao[0] >= nx or posicao[0] < 0 or posicao[1] >= ny \
             or posicao[1] < 0 or labirinto[posicao[0]][posicao[1]] == 1:
@@ -112,11 +114,12 @@ def posicoes_adjacentes(posicao):
     return posicoes + ((posicao[0] + 1, posicao[1]), (posicao[0], posicao[1] + 1))
 
 
-def mapa_str(labirinto, posicoes):
+def mapa_str(labirinto, unidades):
     """
     Devolve uma cadeia de carateres com o mapa do labirinto
     """
-    if not eh_mapa_valido(labirinto, posicoes):
+    if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) \
+            or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("mapa_str: algum dos argumentos e invalido")
 
     res = ""
@@ -124,7 +127,7 @@ def mapa_str(labirinto, posicoes):
         for x in range(len(labirinto)):
             if labirinto[x][y] == 1:
                 res = res + "#"
-            elif not eh_posicao_livre(labirinto, posicoes, (x, y)):
+            elif not eh_posicao_livre(labirinto, unidades, (x, y)):
                 res = res + "O"
             else:
                 res = res + "."
@@ -138,7 +141,8 @@ def obter_objetivos(labirinto, unidades, posicao):
     posicoes livres no labirinto, nao inclui as posicoes adjancentes
     a unidade correspondente a pos.
     """
-    if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
+    if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) or not eh_posicao(posicao) \
+        or posicao not in unidades or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("obter_objetivos: algum dos argumentos e invalido")
     res = ()
     for unidade in unidades:
@@ -154,7 +158,8 @@ def obter_caminho(labirinto, unidades, posicao):
     """
     Devolve o conjunto de posicoes para resolver o labirinto.
     """
-    if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
+    if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) or not eh_posicao(posicao)\
+            or posicao not in unidades or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("obter_caminho: algum dos argumentos e invalido")
 
     fila_exploracao = [(posicao,)]
@@ -177,7 +182,8 @@ def obter_caminho(labirinto, unidades, posicao):
 
 
 def mover_unidade(labirinto, unidades, posicao):
-    if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
+    if not eh_labirinto(labirinto) or not eh_conj_posicoes(unidades) or not eh_posicao(posicao) \
+            or posicao not in unidades or not eh_mapa_valido(labirinto, unidades):
         raise ValueError("obter_caminho: algum dos argumentos e invalido")
     caminho = obter_caminho(labirinto, unidades, posicao)
     for i in range(len(unidades)):
