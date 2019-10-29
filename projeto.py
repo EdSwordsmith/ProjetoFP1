@@ -11,7 +11,6 @@ def eh_labirinto(tuplo):
         return False
 
     nx, ny = len(tuplo), 0
-
     for i in range(nx):
         if not type(tuplo[i]) is tuple or (ny != len(tuplo[i]) and i != 0):
             return False
@@ -128,7 +127,7 @@ def mapa_str(labirinto, posicoes):
             else:
                 res = res + "."
         res = res + "\n"
-    return res
+    return res[:-1]
 
 
 def obter_objetivos(labirinto, unidades, posicao):
@@ -178,3 +177,8 @@ def obter_caminho(labirinto, unidades, posicao):
 def mover_unidade(labirinto, unidades, posicao):
     if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
         raise ValueError("obter_caminho: algum dos argumentos e invalido")
+    caminho = obter_caminho(labirinto, unidades, posicao)
+    for i in range(len(unidades)):
+        if unidades[i] == posicao:
+            unidades = unidades[:i] + (caminho[1],) + unidades[i+1]
+    return unidades
