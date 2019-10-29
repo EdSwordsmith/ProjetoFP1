@@ -150,19 +150,22 @@ def obter_objetivos(labirinto, unidades, posicao):
 
 
 def obter_caminho(labirinto, unidades, posicao):
+    """
+    Devolve o conjunto de posicoes para resolver o labirinto.
+    """
     if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
         raise ValueError("obter_caminho: algum dos argumentos e invalido")
 
     fila_exploracao = [(posicao,)]
-    posicoes_visitadas = []
+    visitadas = []
     objetivos = obter_objetivos(labirinto, unidades, posicao)
 
     while fila_exploracao:
         caminho_atual = fila_exploracao.pop(0)
         posicao_atual = caminho_atual[-1]
 
-        if posicao_atual not in posicoes_visitadas:
-            posicoes_visitadas.append(posicao_atual)
+        if posicao_atual not in visitadas:
+            visitadas.append(posicao_atual)
             if posicao_atual in objetivos:
                 return caminho_atual
             for pos in posicoes_adjacentes(posicao_atual):
@@ -171,3 +174,7 @@ def obter_caminho(labirinto, unidades, posicao):
                     fila_exploracao.append(novo_caminho)
     return ()
 
+
+def mover_unidade(labirinto, unidades, posicao):
+    if not eh_mapa_valido(labirinto, unidades) or posicao not in unidades:
+        raise ValueError("obter_caminho: algum dos argumentos e invalido")
