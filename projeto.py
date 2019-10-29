@@ -46,9 +46,11 @@ def eh_conj_posicoes(tuplo):
     if not type(tuplo) is tuple:
         return False
 
+    elementos = []
     for el in tuplo:
-        if not eh_posicao(el):
+        if not eh_posicao(el) or el in elementos:
             return False
+        elementos.append(el)
     return True
 
 
@@ -123,7 +125,7 @@ def mapa_str(labirinto, posicoes):
             if labirinto[x][y] == 1:
                 res = res + "#"
             elif not eh_posicao_livre(labirinto, posicoes, (x, y)):
-                res = res + "0"
+                res = res + "O"
             else:
                 res = res + "."
         res = res + "\n"
